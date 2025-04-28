@@ -38,41 +38,42 @@ export default function UserPicker() {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl bg-white flex flex-col rounded-lg">
-      <div className="py-4 bg-black text-white text-4xl font-semibold font-serif flex justify-center items-center">
+    <div className="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl bg-white flex flex-col rounded-lg ">
+      <div className="py-4 bg-black text-white text-4xl font-semibold font-serif flex justify-center items-center w-full">
         <h1>User Picker 😘</h1>
       </div>
-      <div className="w-full flex mt-4 ml-2 gap-60 p-2">
+      <div className="w-full flex mt-4 ml-2 lg:gap-60 p-2 md:gap-52 sm:gap-44 gap-20">
         <button 
-          className="text-white bg-black px-4 py-2 text-2xl w-1/3" 
+          className="text-white bg-black px-2 sm:px-4 py-1 sm:py-2 text-base sm:text-2xl w-1/3 " 
           onClick={() => setShowFavorites(false)} // Show all users when clicked
         >
           Your Options 😍
         </button>
         <button 
-          className="text-white bg-black px-4 py-2 text-2xl w-1/3" 
-          onClick={toggleShowFavorites} // Show favorite users when clicked
+          className="text-white bg-black px-2 sm:px-4 sm:py-2 py-1 text-base sm:text-2xl w-1/3" 
+          onClick={toggleShowFavorites} 
         >
           Favorites 💕
         </button>
       </div>
       <div className="w-full">
         {loading ? (
-          <div className="w-full max-w-2xl h-full flex justify-center items-center text-white bg-black font-serif text-6xl">
+          <div className="w-full max-w-2xl h-[200px] flex justify-center  text-4xl ml-8 sm:ml-8 items-center text-black font-serif md:text-6xl md:ml-12 lg:ml-24">
             Loading...
           </div>
         ) : error ? (
           <p style={{ color: "red" }}>{error}</p>
         ) : showFavorites ? (
-          <DisplayFavorites favorites={favorites} /> // Show favorites when toggled
+          <DisplayFavorites favorites={favorites} /> 
         ) : (
-          <div className="overflow-auto max-h-[300px] w-full rounded-lg p-4 mt-3">
-            <table className="min-w-full bg-white border border-gray-300">
-              <thead className="bg-gray-100 sticky top-0">
+          <div className="w-full overflow-x-auto mt-3 rounded-lg">
+          <div className="min-w-[100px] sm:min-w-[350px] md:min-w-[600px] max-w-full w-full overflow-y-scroll max-h-[500px] bg-white rounded-lg p-4 border border-gray-300">
+            <table className="w-full text-sm sm:text-base">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-2 px-4 border-b text-left">Names</th>
-                  <th className="py-2 px-4 border-b text-left">Email</th>
-                  <th className="py-2 px-4 border-b text-left">Options</th>
+                  <th className="py-2 px-4 border-b text-left whitespace-nowrap">Names</th>
+                  <th className="py-2 px-4 border-b text-left whitespace-nowrap">Email</th>
+                  <th className="py-2 px-4 border-b text-left whitespace-nowrap">Options</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,23 +82,26 @@ export default function UserPicker() {
                     <td className="py-2 px-4 border-b">{userOne.name}</td>
                     <td className="py-2 px-4 border-b">{userOne.email}</td>
                     <td className="py-2 px-4 border-b">
-                      <button className="px-3 py-1 bg-blue-500 text-white rounded" onClick={() => makeFavorite(userOne)}>
+                      <button
+                        className="px-3 py-1 bg-blue-500 text-white rounded"
+                        onClick={() => makeFavorite(userOne)}
+                      >
                         Favorite
                       </button>
                     </td>
                   </tr>
                 ))}
+        
+                {Array.from({ length: usersPerPage - currentUsers.length }).map((_, idx) => (
+                  <tr key={`empty-${idx}`}>
+                    <td className="py-2 px-4 border-b">&nbsp;</td>
+                    <td className="py-2 px-4 border-b">&nbsp;</td>
+                    <td className="py-2 px-4 border-b">&nbsp;</td>
+                  </tr>
+                ))}
               </tbody>
-
-              {Array.from({ length: usersPerPage - currentUsers.length }).map((_, idx) => (
-                <tr key={`empty-${idx}`}>
-                  <td className="py-2 px-4 border-b">&nbsp;</td>
-                  <td className="py-2 px-4 border-b">&nbsp;</td>
-                  <td className="py-2 px-4 border-b" colSpan="2">&nbsp;</td>
-                </tr>
-              ))}
             </table>
-
+        
             <div className="flex justify-between mt-4">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -118,6 +122,8 @@ export default function UserPicker() {
               </button>
             </div>
           </div>
+        </div>
+        
         )}
       </div>
     </div>
